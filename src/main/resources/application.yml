@@ -1,0 +1,33 @@
+server:
+  port: 8080
+
+spring:
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      timeout: 200ms
+      lettuce:
+        pool:
+          max-active: 32
+
+ratelimit:
+  enabled: true
+  token-header: X-API-Key
+  default-rule:
+    limit: 100
+    window-seconds: 60
+  token-rules:
+    # Example overrides — in production these would come from a DB or config server.
+    demo-premium-key:
+      limit: 1000
+      window-seconds: 60
+    demo-trial-key:
+      limit: 10
+      window-seconds: 60
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,prometheus
